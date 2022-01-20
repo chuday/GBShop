@@ -18,6 +18,8 @@ class ShopViewController: UIViewController {
             makeSignupRequest()
             makeChangeUserDataRequest()
             makeLogoutRequest()
+            makeGetCatalogRequest()
+            makeGetGoodRequest()
         }
                 
         func makeAuthRequest() {
@@ -38,8 +40,8 @@ class ShopViewController: UIViewController {
             let factory = requestFactory.makeSignupRequestFactory()
             let user = User(login: "SomebodyElse",
                             password: "mypassword",
-                            name: "A",
-                            lastname: "B")
+                            name: "John",
+                            lastname: "Doe")
             
             factory.signup(user: user) { response in
                 switch response.result {
@@ -56,8 +58,8 @@ class ShopViewController: UIViewController {
             let user = User(id: 123,
                             login: "SomebodyElse",
                             password: "mypassword",
-                            name: "A1",
-                            lastname: "B1")
+                            name: "John",
+                            lastname: "Doe")
             
             factory.changeUserData(user: user) { response in
                 switch response.result {
@@ -82,4 +84,30 @@ class ShopViewController: UIViewController {
                 }
             }
         }
+    
+    func makeGetCatalogRequest() {
+        let factory = requestFactory.makeGetCatalogRequestFactory()
+        
+        factory.getCatalog(pageNumber: 1, categoryId: 1) { response in
+            switch response.result {
+            case .success(let result):
+                print(result)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
+    
+    func makeGetGoodRequest() {
+        let factory = requestFactory.makeGetGoodRequestFactory()
+        
+        factory.getGood(productId: 123) { response in
+            switch response.result {
+            case .success(let result):
+                print(result)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+}
