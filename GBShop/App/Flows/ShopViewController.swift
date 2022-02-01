@@ -22,6 +22,8 @@ class ShopViewController: UIViewController {
             makeGetReviewsRequest()
             makeAddReviewRequest()
             makeRemoveReviewRequest()
+            makeAddToCartRequest()
+            makeDeleteFromCartRequest()
         }
                 
     func makeAuthRequest() {
@@ -122,7 +124,7 @@ class ShopViewController: UIViewController {
     }
     
     func makeGetReviewsRequest() {
-        let factory = requestFactory.makeReviewsFactory()
+        let factory = requestFactory.makeReviewsRequestFactory()
         
         factory.getReviews(productId: 123) { response in
             switch response.result {
@@ -135,7 +137,7 @@ class ShopViewController: UIViewController {
     }
     
     func makeAddReviewRequest() {
-        let factory = requestFactory.makeReviewsFactory()
+        let factory = requestFactory.makeReviewsRequestFactory()
         let review = ReviewRequest(reviewText: "Не берите!", userId: 123, productId: 666)
         
         factory.addReview(review: review){ response in
@@ -149,7 +151,7 @@ class ShopViewController: UIViewController {
     }
     
     func makeRemoveReviewRequest() {
-        let factory = requestFactory.makeReviewsFactory()
+        let factory = requestFactory.makeReviewsRequestFactory()
         
         factory.removeReview(reviewId: 123){ response in
             switch response.result {
@@ -160,4 +162,36 @@ class ShopViewController: UIViewController {
             }
         }
     }
+
+    
+    func makeAddToCartRequest() {
+        let factory = requestFactory.makeCartRequestFactory()
+        
+        let cart = CartRequest(productId: 666, quantity: 1)
+
+        factory.addToCart(cart: cart){ response in
+            switch response.result {
+            case .success(let result):
+                print(result)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    func makeDeleteFromCartRequest() {
+        let factory = requestFactory.makeCartRequestFactory()
+        
+        let cart = CartRequest(productId: 666)
+
+        factory.deleteFromCart(cart: cart){ response in
+            switch response.result {
+            case .success(let result):
+                print(result)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+
 }
